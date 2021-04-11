@@ -1,2 +1,4 @@
 theory.txt
 .idea/
+data/
+__pycache__/

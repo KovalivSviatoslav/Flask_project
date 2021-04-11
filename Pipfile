@@ -7,6 +7,9 @@ verify_ssl = true
 
 [packages]
 flask = "*"
+flask-restful = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
 
 [requires]
 python_version = "3.8"
