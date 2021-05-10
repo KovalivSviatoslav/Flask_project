@@ -1,5 +1,4 @@
-from datetime import datetime
-from typing import List
+import datetime
 
 from flask import request
 from flask_restful import Resource
@@ -32,7 +31,7 @@ class FilmListApi(Resource):
         try:
             film = Film(
                 title=film_json['title'],
-                release_date=datetime.strptime(film_json['release_date'], '%B, d, Y'),
+                release_date=datetime.datetime.strptime(film_json['release_date'], '%B %d, %Y'),
                 distributed_by=film_json['distributed_by'],
                 description=film_json.get('description'),
                 length=film_json.get('length'),
@@ -51,7 +50,7 @@ class FilmListApi(Resource):
         try:
             db.session.query(Film).filter_by(uuid=uuid).update(
                 dict(title=film_json['title'],
-                     release_date=datetime.strptime(film_json['release_date'], '%B, d, Y'),
+                     release_date=datetime.datetime.strptime(film_json['release_date'], '%B %d, %Y'),
                      distributed_by=film_json['distributed_by'],
                      description=film_json.get('description'),
                      length=film_json.get('length'),
@@ -66,14 +65,14 @@ class FilmListApi(Resource):
     def patch(self, uuid):
         film = db.session.query(Film).filter_by(uuid=uuid).first()
         if not film:
-            return '', 404
+            return "", 404
         film_json = request.json
         title = film_json.get('title')
         release_date = datetime.datetime.strptime(film_json.get('release_date'), '%B %d, %Y') if film_json.get(
             'release_date') else None
-        distributed_by = film_json.get('distributed_by'),
-        rating = film_json.get('rating'),
-        length = film_json.get('length'),
+        distributed_by = film_json.get('distributed_by')
+        rating = film_json.get('rating')
+        length = film_json.get('length')
         description = film_json.get('description')
 
         if title:

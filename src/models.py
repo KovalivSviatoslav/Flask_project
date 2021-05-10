@@ -31,11 +31,9 @@ class Film(db.Model):
         return {
             'title': self.title,
             'uuid': self.uuid,
-            'release_date': self.release_date,
+            'release_date': self.release_date.strftime('%B %d, %Y'),
             'description': self.description,
             'distributed_by': self.distributed_by,
             'length': self.length,
             'rating': self.rating
         }
-
-# .strftime('%Y-%m-%d')
