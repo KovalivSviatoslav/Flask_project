@@ -7,4 +7,4 @@ class FilmSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Film
         exclude = ['id']
-        load_instance = True  # todo: check this
+        load_instance = True

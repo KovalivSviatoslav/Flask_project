@@ -29,7 +29,6 @@ class Film(db.Model):
 
 
 class Actor(db.Model):
-    # todo: add MtoM to Film if won't in this course.
     __tablename__ = 'actors'
 
     id = db.Column(db.Integer, primary_key=True)
