@@ -1,7 +1,7 @@
 from datetime import date
 
 from src import db
-from src.models import Film
+from src.database.models import Film, Actor
 
 
 def populate_films():
@@ -70,6 +70,13 @@ def populate_films():
         rating=8.1,
     )
 
+    daniel_radcliffe = Actor(name='Daniel', surname='Radcliffe', age=date(1989, 7, 23), is_active=True)
+    emma_watson = Actor(name='Emma', surname='Watson', age=date(1990, 4, 15), is_active=True)
+    rupert_grint = Actor(name='Rupert', surname='Grint', age=date(1988, 9, 24), is_active=True)
+    richard_harris = Actor(name='Richard', surname='Harris', age=date(1930, 10, 1), is_active=False)
+    michael_gambon = Actor(name='Michael', surname='Gambon', age=date(1940, 10, 19), is_active=True)
+    alan_rickman = Actor(name='Alan', surname='Rickman', age=date(1946, 2, 21), is_active=False)
+
     db.session.add(harry_potter_and_ph_stone)
     db.session.add(harry_potter_and_ch_s)
     db.session.add(harry_potter_and_priz_az)
@@ -78,6 +85,13 @@ def populate_films():
     db.session.add(harry_potter_and_half_blood_prince)
     db.session.add(harry_potter_and_deathly_hallows_1)
     db.session.add(harry_potter_and_deathly_hallows_2)
+
+    db.session.add(daniel_radcliffe)
+    db.session.add(emma_watson)
+    db.session.add(rupert_grint)
+    db.session.add(richard_harris)
+    db.session.add(michael_gambon)
+    db.session.add(alan_rickman)
 
     db.session.commit()
     db.session.close()

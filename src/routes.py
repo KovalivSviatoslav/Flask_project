@@ -4,7 +4,7 @@ from flask import request
 from flask_restful import Resource
 
 from src import api, db
-from src.models import Film
+from src.database.models import Film, Actor
 
 
 class Smoke(Resource):
@@ -98,25 +98,90 @@ class FilmListApi(Resource):
             return '', 404
         db.session.delete(film)
         db.session.commit()
-        return {'message': 'Updated successfully'}, 200
+        return {'message': 'Deleted successfully'}, 204
 
 
-class ArtistsListApi(Resource):
-    def get(self, uuid=None):
-        pass
+class ActorListApi(Resource):
+    def get(self, actor_id=None):
+        if not actor_id:
+            actors = db.session.query(Actor).all()
+            return [a.to_dict() for a in actors], 200
+        else:
+            actor = db.session.query(Actor).filter_by(id=actor_id).first()
+            if not actor:
+                return '', 404
+            else:
+                return actor.to_dict(), 200
 
     def post(self):
-        pass
+        actor_json = request.json
+        if not actor_json:
+            return {'message': 'Wrong data'}, 400
+        try:
+            actor = Actor(
+                name=actor_json['name'],
+                surname=actor_json['surname'],
+                age=actor_json['age']
+            )
+            db.session.add(actor)
+            db.session.commit()
+        except ValueError:
+            return {'message': 'Wrong data'}, 400
+        return {'message': 'Create successfully'}, 201
 
-    def put(self):
-        pass
+    def put(self, actor_id):
+        actor_json = request.json
+        if not actor_json:
+            return {'message': 'Wrong data'}
+        try:
+            db.session.query(Actor).filter_by(id=actor_id).update(
+                dict(
+                    # todo: raise exception if id?
+                    id=actor_json['id'],
+                    name=actor_json['name'],
+                    surname=actor_json['surname'],
+                    age=actor_json['age']
+                )
+            )
+            db.session.commit()
+        except ValueError:
+            return {'message': 'Wrong data'}, 400
+        return {'message': 'Update successfully'}, 200
 
-    def patch(self):
-        pass
+    def patch(self, actor_id):
+        actor = db.session.query(Actor).filter_by(id=actor_id).first()
+        if not actor:
+            return "", 404
+        actor_json = request.json
+        # todo: raise exception?
+        id = actor_json.get('id')
+        name = actor_json.get('name')
+        surname = actor_json.get('surname')
+        age = actor_json.get('age') if actor_json.get else None
 
-    def delete(self):
-        pass
+        if id:
+            # todo: raise exception?
+            actor.id = id
+        elif name:
+            actor.name = name
+        elif surname:
+            actor.surname = surname
+        elif age:
+            actor.age = age
+
+        db.session.add(actor)
+        db.session.commit()
+        return {'message': 'Updated successfully'}
+
+    def delete(self, actor_id):
+        actor = db.session.query(Actor).filter_by(id=actor_id).first()
+        if not actor:
+            return '', 404
+        db.session.delete(actor)
+        db.session.commit()
+        return {'message': 'Deleted successfully'}, 204
 
 
 api.add_resource(Smoke, '/smoke', strict_slashes=False)
 api.add_resource(FilmListApi, '/films', '/films/<uuid>', strict_slashes=False)
+api.add_resource(ActorListApi, '/actors', '/actors/<actor_id>', strict_slashes=False)

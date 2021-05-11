@@ -1,3 +1,3 @@
-# flask_itvdn
+# Flask tutorial project
 
-Flask course from itvdn, April 2021.
+April 2021.
