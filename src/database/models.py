@@ -27,17 +27,6 @@ class Film(db.Model):
     def __repr__(self):
         return f'Film({self.title}, {self.uuid}, {self.distributed_by}, {self.release_date})'
 
-    def to_dict(self):
-        return {
-            'title': self.title,
-            'uuid': self.uuid,
-            'release_date': self.release_date.strftime('%B %d, %Y'),
-            'description': self.description,
-            'distributed_by': self.distributed_by,
-            'length': self.length,
-            'rating': self.rating
-        }
-
 
 class Actor(db.Model):
     # todo: add MtoM to Film if won't in this course.
