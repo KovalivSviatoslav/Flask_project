@@ -1,7 +1,18 @@
 from datetime import date
 
 from src import db
-from src.database.models import Film, Actor
+from src.database.models import Film, Actor, films_actors
+
+
+def clear_tables_data():
+    db.session.query(Film).delete()
+    db.session.commit()
+
+    db.session.query(Actor).delete()
+    db.session.commit()
+
+    db.session.query(films_actors).delete()
+    db.session.commit()
 
 
 def populate_films():
@@ -89,6 +100,18 @@ def populate_films():
     michael_gambon = Actor(name='Michael', surname='Gambon', age=date(1940, 10, 19), is_active=True)
     alan_rickman = Actor(name='Alan', surname='Rickman', age=date(1946, 2, 21), is_active=False)
 
+    harry_potter_and_ph_stone.actors = [daniel_radcliffe, emma_watson, rupert_grint, richard_harris, alan_rickman]
+    harry_potter_and_ch_s.actors = [daniel_radcliffe, emma_watson, rupert_grint, richard_harris, alan_rickman]
+    harry_potter_and_priz_az.actors = [daniel_radcliffe, emma_watson, rupert_grint, michael_gambon, alan_rickman]
+    harry_potter_and_ph_goblet_fire.actors = [daniel_radcliffe, emma_watson, rupert_grint, michael_gambon, alan_rickman]
+    harry_potter_and_order_phoenix.actors = [daniel_radcliffe, emma_watson, rupert_grint, michael_gambon, alan_rickman]
+    harry_potter_and_half_blood_prince.actors = [daniel_radcliffe, emma_watson, rupert_grint, michael_gambon,
+                                                 alan_rickman]
+    harry_potter_and_deathly_hallows_1.actors = [daniel_radcliffe, emma_watson, rupert_grint, michael_gambon,
+                                                 alan_rickman]
+    harry_potter_and_deathly_hallows_2.actors = [daniel_radcliffe, emma_watson, rupert_grint, michael_gambon,
+                                                 alan_rickman]
+
     db.session.add(harry_potter_and_ph_stone)
     db.session.add(harry_potter_and_ch_s)
     db.session.add(harry_potter_and_priz_az)
@@ -110,6 +133,10 @@ def populate_films():
 
 
 if __name__ == '__main__':
+    print('Cleaning db...')
+    clear_tables_data()
+    print('Successfully cleaned')
+    print('')
     print('Populating db...')
     populate_films()
     print('Successfully populated!')
