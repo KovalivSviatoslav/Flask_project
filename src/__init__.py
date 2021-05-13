@@ -30,5 +30,6 @@ from .database import models
 #  - flask blueprint
 #  - SQLAlchemyAutoSchema: load_instance
 #  - Config: SQLALCHEMY_TRACK_MODIFICATIONS
+#  - db.relationship('Actor', secondary=films_actors, lazy='subquery', backref=db.backref('films', lazy=True))
 #  improve:
 #  - Add MtoM to Actor model

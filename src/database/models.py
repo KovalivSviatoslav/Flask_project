@@ -3,6 +3,13 @@ import uuid
 from src import db
 
 
+films_actors = db.Table(
+    'films_actors',
+    db.Column('actor_id', db.Integer, db.ForeignKey('actors.id'), primary_key=True),
+    db.Column('film_id', db.Integer, db.ForeignKey('films.id'), primary_key=True)
+)
+
+
 class Film(db.Model):
     __tablename__ = 'films'
 
@@ -14,8 +21,10 @@ class Film(db.Model):
     distributed_by = db.Column(db.String(120), nullable=False)
     length = db.Column(db.Float)
     rating = db.Column(db.Float)
+    actors = db.relationship('Actor', secondary=films_actors, lazy='subquery', backref=db.backref('films', lazy=True))
 
-    def __init__(self, title, release_date, description, distributed_by, length, rating):
+    def __init__(self, title, release_date, description, distributed_by, length, rating, actors=None):
+        # we use this because of have uuid field
         self.title = title
         self.release_date = release_date
         self.description = description
@@ -23,6 +32,10 @@ class Film(db.Model):
         self.length = length
         self.rating = rating
         self.uuid = str(uuid.uuid4())
+        if actors:
+            self.actors = actors
+        else:
+            self.actors = []
 
     def __repr__(self):
         return f'Film({self.title}, {self.uuid}, {self.distributed_by}, {self.release_date})'
