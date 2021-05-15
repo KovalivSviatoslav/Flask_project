@@ -38,7 +38,7 @@ class Film(db.Model):
             self.actors = []
 
     def __repr__(self):
-        return f'Film({self.title}, {self.uuid}, {self.distributed_by}, {self.release_date})'
+        return f'Film({self.title}, {self.uuid}, {self.distributed_by}, {self.release_date}, {self.actors})'
 
 
 class Actor(db.Model):
