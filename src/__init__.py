@@ -2,7 +2,7 @@ import config
 from flask import Flask
 from flask_migrate import Migrate
 from flask_restful import Api
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, get_debug_queries
 from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
@@ -21,11 +21,28 @@ SWAGGER_BLUEPRINT = get_swaggerui_blueprint(
     }
 )
 app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix=SWAGGER_URL)
+app.debug = True
+
+
+def sql_debug(response):
+    queries = list(get_debug_queries())
+    total_duration = 0.0
+    for q in queries:
+        total_duration += q.duration
+
+    print('=' * 80)
+    print(f' SQL Queries - {len(queries)} in {round(total_duration * 1000, 2)}ms')
+    print('=' * 80)
+
+    return response
+
+
+app.after_request(sql_debug)
 
 from . import routes
 from .database import models
 
-# todo: add swagger for actor
+# todo:
 #  check:
 #  - flask blueprint
 #  - SQLAlchemyAutoSchema: load_instance
@@ -33,3 +50,4 @@ from .database import models
 #  - db.relationship('Actor', secondary=films_actors, lazy='subquery', backref=db.backref('films', lazy=True))
 #  improve:
 #  - Add MtoM to Actor model
+#  - add swagger for Actor and MtoM relation
