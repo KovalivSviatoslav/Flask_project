@@ -1,6 +1,7 @@
 from flask import request
 from flask_restful import Resource
 from marshmallow import ValidationError
+from sqlalchemy.orm import joinedload
 
 from src import db
 from src.database.models import Actor
@@ -12,9 +13,15 @@ class ActorListApi(Resource):
 
     def get(self, pk=None):
         if not pk:
-            actors = db.session.query(Actor).all()
+            actors = db.session.query(Actor).options(
+                joinedload(Actor.films)
+            ).all()
             return self.schema.dump(actors, many=True), 200
-        actor = db.session.query(Actor).filter_by(id=pk).first()
+
+        actor = db.session.query(Actor).options(
+                joinedload(Actor.films)
+            ).filter_by(id=pk).first()
+
         if not actor:
             return '', 404
         else:

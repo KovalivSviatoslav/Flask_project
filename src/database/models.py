@@ -3,6 +3,15 @@ import uuid
 from src import db
 
 
+# =========================================================
+# db.relationship( lazy='subquery'(automatically load the related data) / True (load object if ))
+# in backref=db.backref(lazy=True) is the same
+#
+# If we need to load related data manually, use this in your queries:
+# options(joinedload/selectinload(<model>.related_field))
+# selectinload(<model.field>) - will make a subquery
+# =========================================================
+
 films_actors = db.Table(
     'films_actors',
     db.Column('actor_id', db.Integer, db.ForeignKey('actors.id'), primary_key=True),
@@ -21,7 +30,7 @@ class Film(db.Model):
     distributed_by = db.Column(db.String(120), nullable=False)
     length = db.Column(db.Float)
     rating = db.Column(db.Float)
-    actors = db.relationship('Actor', secondary=films_actors, lazy='subquery', backref=db.backref('films', lazy=True))
+    actors = db.relationship('Actor', secondary=films_actors, lazy=True, backref=db.backref('films', lazy=True))
 
     def __init__(self, title, release_date, description, distributed_by, length, rating, actors=None):
         # we use this because of have uuid field
