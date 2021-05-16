@@ -11,8 +11,8 @@ flask-sqlalchemy = "*"
 flask-migrate = "*"
 flask-swagger-ui = "*"
 marshmallow-sqlalchemy = "*"
-pyjwt = "*"
 flask = "==1.1.2"
+pyjwt = "==1.7.1"
 
 [requires]
 python_version = "3.8"
