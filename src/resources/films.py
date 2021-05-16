@@ -5,12 +5,14 @@ from sqlalchemy.orm import joinedload
 
 from src import db
 from src.database.models import Film
+from src.resources.auth import token_required
 from src.schemas.films import FilmSchema
 
 
 class FilmListApi(Resource):
     schema = FilmSchema()
 
+    @token_required
     def get(self, uuid=None):
         if not uuid:
             films = db.session.query(Film).options(
@@ -27,6 +29,7 @@ class FilmListApi(Resource):
         else:
             return self.schema.dump(film), 200
 
+    @token_required
     def post(self):
         try:
             film = self.schema.load(request.json, session=db.session)
@@ -36,6 +39,7 @@ class FilmListApi(Resource):
         db.session.commit()
         return self.schema.dump(film), 201
 
+    @token_required
     def put(self, uuid):
         film = db.session.query(Film).filter_by(uuid=uuid).first()
         if not film:
@@ -48,6 +52,7 @@ class FilmListApi(Resource):
         db.session.commit()
         return self.schema.dump(film), 200
 
+    @token_required
     def patch(self, uuid):
         film = db.session.query(Film).filter_by(uuid=uuid).first()
         if not film:
@@ -60,6 +65,7 @@ class FilmListApi(Resource):
         db.session.commit()
         return self.schema.dump(film), 200
 
+    @token_required
     def delete(self, uuid):
         film = db.session.query(Film).filter_by(uuid=uuid).first()
         if not film:

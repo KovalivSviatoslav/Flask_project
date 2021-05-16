@@ -5,12 +5,14 @@ from sqlalchemy.orm import joinedload
 
 from src import db
 from src.database.models import Actor
+from src.resources.auth import token_required
 from src.schemas.actors import ActorSchema
 
 
 class ActorListApi(Resource):
     schema = ActorSchema()
 
+    @token_required
     def get(self, pk=None):
         if not pk:
             actors = db.session.query(Actor).options(
@@ -27,6 +29,7 @@ class ActorListApi(Resource):
         else:
             return self.schema.dump(actor), 200
 
+    @token_required
     def post(self):
         try:
             film = self.schema.load(request.json, session=db.session)
@@ -34,6 +37,7 @@ class ActorListApi(Resource):
             return {'message': str(err)}, 400
         return self.schema.dump(film), 201
 
+    @token_required
     def put(self, pk):
         film = db.session.query(Actor).filter_by(id=pk)
         if not film:
@@ -46,6 +50,7 @@ class ActorListApi(Resource):
         db.session.commit()
         return self.schema.dump(film), 200
 
+    @token_required
     def patch(self, pk):
         actor = db.session.query(Actor).filter_by(id=pk).first()
         if not actor:
@@ -58,6 +63,7 @@ class ActorListApi(Resource):
         db.session.commit()
         return self.schema.dump(actor), 200
 
+    @token_required
     def delete(self, pk):
         actor = db.session.query(Actor).filter_by(id=pk).first()
         if not actor:
