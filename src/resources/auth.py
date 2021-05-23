@@ -9,7 +9,6 @@ from sqlalchemy.exc import IntegrityError
 from werkzeug.security import check_password_hash
 
 from src import db, app
-from src.database.models import User
 from src.schemas.users import UserSchema
 from src.services.auth_service import UserService
 

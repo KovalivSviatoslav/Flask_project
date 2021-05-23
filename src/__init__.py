@@ -43,6 +43,9 @@ from . import routes
 from .database import models
 
 # todo:
+#  flask-film-api
+#  run container at 5000 port:
+#   docker run -p 5000:5000 films_api
 #  check:
 #  - flask blueprint
 #  - SQLAlchemyAutoSchema: load_instance
