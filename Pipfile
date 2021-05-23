@@ -16,6 +16,7 @@ marshmallow-sqlalchemy = "*"
 flask = "==1.1.2"
 pyjwt = "==1.7.1"
 gunicorn = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.8"
