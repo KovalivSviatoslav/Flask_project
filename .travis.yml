@@ -10,6 +10,6 @@ install:
   - pipenv install --dev
 
 script:
-  - python -m pytest tests/
-  - coverage run --source="src/" -m pytest
+  - python -m pytest tests/ --disable-warnings
+  - coverage run --source="src/" -m pytest --disable-warnings
   - pycodestyle src/ --ignore=E722,E501,E402
