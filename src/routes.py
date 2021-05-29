@@ -1,3 +1,4 @@
+from src.resources.populate_db import PopulateDB, PopulateDBThreaded, PopulateDBThreadPoolExecutor
 from src import api
 from src.resources.actors import ActorListApi
 from src.resources.auth import AuthRegister, AuthLogin
@@ -12,3 +13,6 @@ api.add_resource(ActorListApi, '/actors', '/actors/<pk>', strict_slashes=False)
 api.add_resource(AggregationApi, '/aggregations', strict_slashes=False)
 api.add_resource(AuthRegister, '/register', strict_slashes=False)
 api.add_resource(AuthLogin, '/login', strict_slashes=False)
+api.add_resource(PopulateDB, '/populate-db', strict_slashes=False)
+api.add_resource(PopulateDBThreaded, '/populate-db-threaded', strict_slashes=False)
+api.add_resource(PopulateDBThreadPoolExecutor, '/populate-db-pool', strict_slashes=False)

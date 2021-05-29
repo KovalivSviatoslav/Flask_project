@@ -5,7 +5,7 @@ BASE_DIR = pathlib.Path(__file__).parent
 
 
 class Config:
-    postgres_uri = os.getenv("DATABASE_URL")  # or other relevant config var
+    postgres_uri = os.getenv("DATABASE_URL", '')  # or other relevant config var
     if postgres_uri.startswith("postgres://"):
         postgres_uri = postgres_uri.replace("postgres://", "postgresql://", 1)
 
